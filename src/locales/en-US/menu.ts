@@ -3,6 +3,8 @@ export default {
   'menu.more-blocks': 'More Blocks',
   'menu.home': 'Home',
   'menu.admin': 'Admin',
+  'menu.management': 'Equipment management',
+  'menu.objective': 'Objective management',
   'menu.admin.sub-page': 'Sub-Page',
   'menu.login': 'Login',
   'menu.register': 'Register',

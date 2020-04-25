@@ -44,35 +44,40 @@ export default defineConfig({
     },
 
     {
-      path: '/welcome',
-      name: 'welcome',
-      icon: 'smile',
+      path: '/home',
+      name: 'home',
+      icon: 'home',
       component: './Welcome',
     },
     {
-      path: '/admin',
-      name: 'admin',
-      icon: 'crown',
-      access: 'canAdmin',
+      path: '/management',
+      name: 'management',
+      icon: 'database',
       component: './Admin',
-      routes: [
-        {
-          path: '/admin/sub-page',
-          name: 'sub-page',
-          icon: 'smile',
-          component: './Welcome',
-        },
-      ],
+      // routes: [
+      //   {
+      //     path: '/admin/sub-page',
+      //     name: 'sub-page',
+      //     icon: 'smile',
+      //     component: './Welcome',
+      //   },
+      // ],
     },
     {
-      name: 'list.table-list',
-      icon: 'table',
+      name: 'objective',
+      icon: 'cluster',
+      path: '/list',
+      component: './ListTableList',
+    },
+    {
+      name: 'UnityStream',
+      icon: 'cloud',
       path: '/list',
       component: './ListTableList',
     },
     {
       path: '/',
-      redirect: '/welcome',
+      redirect: '/home',
     },
     {
       component: './404',
