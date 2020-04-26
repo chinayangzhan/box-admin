@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="/src/css/layui.css">
+    <link rel="stylesheet" href="/src/main.css">
+</head>
+<body class="layui-layout-body">
+
+<divbg.jpg>
+    <!-- 内容主体区域 -->
+    <img style="position: absolute; width: 100vw; height: 100vh; display: block;" src="/src/images/bg.jpg" alt="">
+    <div style="width: 300px; position: absolute; top: 50vh; left: 50vw; margin-left: -150px; margin-top: -250px;">
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-bottom: 20px;">
+            <img src="/src/images/computer.svg" style="width: 50px; height: 50px; margin-bottom: 15px;" alt="">
+            <div style="font-size: 25px; color: #fff; text-align: center;">后台管理</div>
+        </div>
+        <div>
+            <input id="password" type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            <div id="err" style="font-size: 13px; color: #e30000">密码错误</div>
+        </div>
+        <button id="loginBtn" style="width: 100%; margin-top: 20px;" type="button" class="layui-btn">登录</button>
+    </div>
+</divbg.jpg>
+
+<script src="/src/main.js"></script>
+<script src="/src/layui.js"></script>
+<script>
+  _generateMenuList('menu');
+  //JavaScript代码区域
+  layui.use('element', function(){
+    var element = layui.element;
+    layui.$('#loginBtn').on('click', function() {
+      console.log(layui.$('#password')[0].value)
+    })
+    layui.$('#password').on('input', function() {
+      layui.$('#err')[0].innerHTML = '';
+    })
+  });
+
+</script>
+</body>
+</html>
