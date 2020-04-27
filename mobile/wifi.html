@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=no"/>
+    <title>连接无线网络</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="header">
+    <div id="goBack"><img src="/mobile/images/back.png" alt=""></div>
+    <div id="header_title">设置</div>
+</div>
+<div class="wifi_title">
+    <div>当前无线网络</div>
+    <div style="margin-left: 20px" class="text_blue">AAAAA</div>
+</div>
+<div class="wifi_tip">请选择您要连入的无线网络</div>
+<div class="wifi_list">
+    <div class="wifi_item">
+        <div class="wifi_checked">✔️</div>
+        <div class="wifi_line">
+            <div class="wifi_name">aaaa</div>
+            <div class="wifi_icons"></div>
+        </div>
+    </div>
+    <div class="wifi_item">
+        <div class="wifi_checked">✔️</div>
+        <div class="wifi_line">
+            <div class="wifi_name">aaaa</div>
+            <div class="wifi_icons">
+                <img src="/mobile/images/lock.png" alt="">
+                <img src="/mobile/images/wifi.png" alt="">
+                <img src="/mobile/images/info.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal_title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" placeholder="请输入密码">
+            </div>
+            <div class="modal_footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">加入</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+
+</script>
+</html>

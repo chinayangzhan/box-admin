@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=no"/>
+    <title>设置</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="header">
+    <div id="goBack"><img src="images/back.png" alt=""></div>
+    <div id="header_title">设置</div>
+</div>
+<div class="section_title_label">
+    <img src="images/box-gray.jpg" />
+    <div class="schedule_title_label_text">设备</div>
+</div>
+<div class="section">
+    <div>修改密码</div>
+    <input type="password" id="login_oldpwd" placeholder="请输入旧密码">
+    <input type="password" id="login_newpwd" placeholder="请输入新密码">
+    <input type="password" id="login_newpwd2" placeholder="请再输入新密码">
+    <div id="modify_login_newpwd" class="btn_blue">确定</div>
+</div>
+<div class="section_title_label">
+    <img src="images/network.png" />
+    <div class="schedule_title_label_text">网络</div>
+</div>
+<div class="section">
+    <div class="flex_between">
+        <div style="font-size: 30px">当前无线网路为</div>
+        <div class="text_blue" style="font-size: 30px">{{ ap_ssid }}</div>
+    </div>
+</div>
+<div class="text_blue" id="more_wifi" style="font-size: 25px; text-decoration: underline; margin-top: 10px; float: right; margin-right: 25px;">更多无线网络</div>
+<div class="section_title_label">
+    <img src="images/xinhao.png" />
+    <div class="schedule_title_label_text">WLAN热点</div>
+</div>
+<div class="section">
+    <div class="flex_between">
+        <div>当前WLAN热点为</div>
+        <div class="text_blue">{{ ap_ssid }}</div>
+    </div>
+    <div style="margin-top: 20px">修改当前WLAN热点密码</div>
+    <input type="text" value="{{ ap_key }}">
+    <input type="password" id="wifi_newpwd" placeholder="请输入新密码">
+    <input type="password" id="wifi_newpwd2" placeholder="请再输入新密码">
+    <div id="modify_wifi_newpwd" class="btn_blue">确定</div>
+</div>
+
+<div class="logout">注销</div>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/main.js"></script>
+<script>
+
+//  function fn_modify_wifi_name(){
+//    newName=document.getElementById("wifi_newname").value;
+//    if(newName.length < 1){
+//      alert("new name not valid");
+//      return;
+//    }
+//    var cmd="uci set wireless.default_radio0.ssid=\'" + newName + "\'; uci commit wireless;wifi reload"
+//    var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
+//    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+//    var url='/cgi-bin/shell?' + base64;
+//    var s=syncRequest( url);
+//  }
+
+  $("#modify_wifi_newpwd").on('click', function() {
+    var newPwd = $("#wifi_newpwd")[0].value;
+    var newPwd2 = $("#wifi_newpwd2")[0].value;
+    if (newPwd.length === 0 && newPwd2.length == 0) {
+      alert('请输入密码！')
+      return;
+    }
+    if (newPwd !== newPwd2) {
+      alert('两次密码不一致！')
+      return;
+    }
+    if(newName.length < 8){
+      alert("ew pwd not valid, The length has to be greater than 8 ");
+      return;
+    }
+    var cmd="uci set wireless.default_radio0.key=\'" + newName + "\'; uci commit wireless;wifi reload"
+    var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/cgi-bin/shell?' + base64;
+
+    $.ajax({
+      url: url,
+      success: function(res) {
+
+      },
+      error: function(err) {
+        var error = JSON.parse(err);
+        alert('修改时出错：' + error)
+      }
+    })
+  })
+
+
+  $("#modify_login_newpwd").on('click', function() {
+    var oldPwd = $("#login_oldpwd")[0].value;
+    var newPwd = $("#login_newpwd")[0].value;
+    var newPwd2 = $("#login_newpwd2")[0].value;
+    if (newPwd.length === 0 && newPwd2.length == 0) {
+      alert('请输入密码！')
+      return;
+    }
+    if (newPwd !== newPwd2) {
+      alert('两次密码不一致！')
+      return;
+    }
+    var sessionid = _getCookie("sessionid");
+    var passhash = CryptoJS.MD5(oldPwd).toString();
+    var t1 = CryptoJS.MD5(sessionid + passhash).toString();
+    var t2 = CryptoJS.MD5(newPwd).toString();
+
+    var url = _document_root + "doModifyPwd?t1=" + t1 + "&t2=" + t2;
+
+    $.ajax({
+      url: url,
+      success: function(res) {
+        var obj = JSON.parse(res)
+        if(obj["Status"] == "OK"){
+          alert("修改成功")
+        } else {
+          alert("修改失败")
+        }
+      },
+      error: function(err) {
+        var error = JSON.parse(err);
+        alert('修改时出错：' + error)
+      }
+    })
+  })
+</script>
+</html>

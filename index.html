@@ -19,12 +19,15 @@
         </div>
         <div>
             <input id="password" type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
-            <div id="err" style="font-size: 13px; color: #e30000">密码错误</div>
+            <div id="err" style="font-size: 13px; color: #e30000"></div>
         </div>
         <button id="loginBtn" style="width: 100%; margin-top: 20px;" type="button" class="layui-btn">登录</button>
     </div>
 </divbg.jpg>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
 <script src="/src/main.js"></script>
 <script src="/src/layui.js"></script>
 <script>
@@ -33,12 +36,47 @@
   layui.use('element', function(){
     var element = layui.element;
     layui.$('#loginBtn').on('click', function() {
-      console.log(layui.$('#password')[0].value)
+      login();
+    })
+    layui.$('#password').on('keydown', function(e) {
+      if (e.keyCode === 13) {
+        login();
+      }
     })
     layui.$('#password').on('input', function() {
       layui.$('#err')[0].innerHTML = '';
     })
   });
+
+  function login() {
+    var pwd = layui.$('#password')[0].value;
+    if(pwd.length === 0){
+      layui.$('#err')[0].innerHTML = '请输入密码';
+      return;
+    }
+    var sessionid=_getCookie("sessionid");
+    var passhash = CryptoJS.MD5(pwd).toString();
+    var t = CryptoJS.MD5(sessionid + passhash).toString();
+    var url=_baseUrl + "doLogin?t=" + t;
+    try {
+      layui.$.get(url, {}, function(res, status) {
+        console.log(status)
+        var obj= JSON.parse(res);
+        if(obj["Status"] == "OK"){
+          if(document.referrer.length > 0){
+            window.location.href=document.referrer;
+          }else{
+            window.location.href=_baseUrl + "?" + Math.random();
+          }
+        }else{
+          layui.$('#err')[0].innerHTML =obj["Message"];
+        }
+      });
+    } catch (e) {
+        console.error(e)
+    }
+
+  }
 
 </script>
 </body>

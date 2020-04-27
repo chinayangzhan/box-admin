@@ -6,6 +6,8 @@
 *
 */
 
+var _baseUrl="/admin/";
+
 function _generateMenuList(menuEleId) {
   var menu = `
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
@@ -39,4 +41,16 @@ function _generateMenuList(menuEleId) {
   if (menuEle) {
     menuEle.innerHTML = menu
   }
+}
+
+
+function _getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++)
+  {
+    var c = ca[i].trim();
+    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  }
+  return "";
 }

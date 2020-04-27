@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=no"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/switch.css">
+</head>
+<body>
+<div id="header">
+    <div id="goBack"><img src="images/back.png" alt=""></div>
+    <div id="header_title">Speedup</div>
+    <div id="setting"><img style="float: right" src="images/setting.png" alt=""></div>
+</div>
+<div id="status">
+    <img id="status_img" src="images/first_bad.jpg" style="width: 100%"/>
+    <img src="images/local_name.jpg" style="width: 100%"/>
+</div>
+<div id="main">
+    <div class="item">
+        <div class="label">
+            <div class="label_icon"><img src="images/box.jpg"/></div>
+            <div class="label_name">设备ID</div>
+        </div>
+        <div class="text_blue" style="font-size: 30px">{{ box_id }}</div>
+    </div>
+    <div class="item">
+        <div class="label">
+            <div class="label_icon"><img src="images/rock.jpg"/></div>
+            <div class="label_name">加速模式</div>
+        </div>
+        <div><input type="checkbox" name="myScheme" id="myScheme"/></div>
+    </div>
+    <div class="item">
+        <div class="label">
+            <div class="label_icon"><img src="images/speed.jpg"/></div>
+            <div class="label_name">传输速度</div>
+        </div>
+    </div>
+    <div id="netcard_speed" style="height: 500px"></div>
+</div>
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/switch.js"></script>
+<script src="js/main.js"></script>
+<script>
+  $('#myScheme').simpleSwitch({
+    'theme': 'Green',
+  });
+  $('#myScheme').on('click', function() {
+    fn_switch_speedmode();
+  })
+
+  $("#setting").on('click', function() {
+    window.location.href = '/admin/mgrStatus';
+  });
+
+  var box_idc_status = '{{box_idc_status}}';
+  var idc_svr_status = '{{idc_svr_status}}';
+  var speed_modal = '{{speed_modal}}';
+
+  updateStatus(box_idc_status, idc_svr_status, speed_modal);
+
+  function updateStatus(box_idc_status, idc_svr_status, speed_modal) {
+    if (box_idc_status == true && idc_svr_status == 'Running') {
+      $('#status_img').attr('src', 'images/all_good.jpg');
+    }
+    if (box_idc_status != true && idc_svr_status == 'Running') {
+      $('#status_img').attr('src', 'images/first_bad.jpg');
+    }
+    if (box_idc_status == true && idc_svr_status != 'Running') {
+      $('#status_img').attr('src', 'images/second_bad.jpg');
+    }
+    if (box_idc_status != true && idc_svr_status != 'Running') {
+      $('#status_img').attr('src', 'images/all_bad.jpg');
+    }
+    if (speed_modal == 'off') {
+      $('#myScheme').attr('checked', false);
+    } else {
+      $('#myScheme').attr('checked', true);
+    }
+  }
+
+  function getStatus() {
+    var url = _document_root + 'doGetStatus';
+    $.ajax({
+      url: url,
+      success: function(res) {
+        var obj = JSON.parse(res);
+        var box_idc_status = obj.box_idc_status;
+        var idc_svr_status = obj.idc_svr_status;
+        var speed_modal = obj.speed_modal;
+        updateStatus(box_idc_status, idc_svr_status, speed_modal);
+      },
+      error: function(error) {
+        var obj = JSON.parse(res);
+        alert(obj);
+      },
+    });
+
+  }
+
+  function fn_update_pic() {
+    var s = '<img src=/netcard_temp.png?' + Math.random() + '> </img>';
+    $('#netcard_speed').html(s);
+  }
+
+  function fn_switch_speedmode() {
+    var url = _document_root + 'doSwitchSpeedService';
+    $.ajax({
+      url: url,
+      success: function(res) {
+        var obj = JSON.parse(res);
+        if (obj['Status'] == 'OK') {
+          var scheme = $('#myScheme').attr('checked');
+          if (scheme) {
+            $('#myScheme').attr('checked', false);
+          } else {
+            $('#myScheme').attr('checked', true);
+          }
+        } else {
+          alert('Failed');
+        }
+      },
+      error: function(error) {
+        var obj = JSON.parse(res);
+        alert(obj);
+      },
+    });
+  }
+
+  setInterval('getStatus()', 5000);
+  setInterval('fn_update_pic()', 1000);
+</script>
+</html>
