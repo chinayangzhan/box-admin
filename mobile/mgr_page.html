@@ -29,7 +29,7 @@
 <div class="section">
     <div class="flex_between">
         <div style="font-size: 30px">当前无线网路为</div>
-        <div class="text_blue" style="font-size: 30px">{{ ap_ssid }}</div>
+        <div class="text_blue" style="font-size: 30px">{{ cur_ssid }}</div>
     </div>
 </div>
 <div class="text_blue" id="more_wifi" style="font-size: 25px; text-decoration: underline; margin-top: 10px; float: right; margin-right: 25px;">更多无线网络</div>
@@ -49,7 +49,7 @@
     <div id="modify_wifi_newpwd" class="btn_blue">确定</div>
 </div>
 
-<div class="logout">注销</div>
+<div style="margin-bottom: 50px;"></div>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
@@ -83,11 +83,11 @@
       alert('两次密码不一致！')
       return;
     }
-    if(newName.length < 8){
+    if(newPwd.length < 8){
       alert("ew pwd not valid, The length has to be greater than 8 ");
       return;
     }
-    var cmd="uci set wireless.default_radio0.key=\'" + newName + "\'; uci commit wireless;wifi reload"
+    var cmd="uci set wireless.default_radio0.key=\'" + newPwd + "\'; uci commit wireless;wifi reload"
     var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
     var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
     var url='/cgi-bin/shell?' + base64;
@@ -140,5 +140,11 @@
       }
     })
   })
+  $('#more_wifi').on('click', function() {
+    window.location.href = "/cgi-bin/admin"
+  })
+    $("#logout").on('click', function() {
+      window.location.href = "/admin/login"
+    })
 </script>
 </html>

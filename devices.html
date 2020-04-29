@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="/src/css/bootstrap.css">
+    <link rel="stylesheet" href="/src/css/layui.css">
+    <link rel="stylesheet" href="/src/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" style="color: #dbdbdb;"><img style="width: 25px; height: 25px;"  class="title-icon" src="/src/images/menu/wifi.svg" alt="">后台管理</div>
+        <!-- 头部区域 -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <!--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">-->
+                    Admin
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll" id="menu">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        </div>
+    </div>
+
+    <div class="layui-body" style="background-color: #F2F2F2;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 20px;">
+            <div style="background-color: #fff; padding: 10px 30px;">
+                <div style="display: flex; justify-content: space-between">
+                    <button onclick="showModal()" type="button" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button>
+                    <div style="display: flex; justify-content: flex-end; align-items: center; border: 1px solid #dddddd;">
+                        <i class="layui-icon" style="margin:0 10px;">&#xe615;</i>
+                        <input id="search" oninput="searchList()" style="max-width: 250px; border: none;" type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="table">
+                    <div class="table_head">
+                        <div class="table_item_id">ID</div>
+                        <div class="table_item_name">名称</div>
+                        <div class="table_item_type">设备类型</div>
+                        <div class="table_item_status">备注</div>
+                        <div class="table_item_time">创建时间</div>
+                        <div class="table_item_action">操作</div>
+                    </div>
+                    <div id="rows">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        ©
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal_body_row"><div style="width: 70px">ID</div><div><input style="width: 170px" type="text" id="device_id" /></div></div>
+                    <div class="modal_body_row"><div style="width: 70px">名称</div><div><input style="width: 170px" type="text" id="owner" /></div></div>
+                    <div class="modal_body_row">
+                        <div style="width: 70px">设备类型</div>
+                        <div>
+                            <select style="width: 170px" type="text" id="box_type" >
+                                <option {% if dtype == 0 then %} selected {% end %}  value="0">移动</option>
+                                <option {% if dtype == 5 then %} selected {% end %}  value="5">路由</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal_body_row"><div style="width: 70px">备注</div><div><input style="width: 170px" type="text" id="memo" /></div></div>
+                </div>
+                <div class="modal_footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="join_wifi" onclick="addDevice()" type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/src/layui.js"></script>
+<script src="/src/jquery.js"></script>
+<script src="/src/bootstrap.js"></script>
+<script src="/src/main.js"></script>
+<script>
+
+    var deviceList = [];
+
+    {% for _, d in ipairs(devices) do %}
+        deviceList.push({
+          id: '{{d.id}}',
+          owner: '{{d.owner}}',
+          dtype: '{{d.dtype}}',
+          status: '{{d.status}}',
+          create_time: '{{d.create_time}}',
+          demo: '{{d.demo}}',
+        })
+    {% end %}
+    console.log(deviceList)
+    generateList(deviceList)
+  _generateMenuList('menu');
+
+  function showModal() {
+    $('#myModal').modal({});
+  }
+
+  function generateList(list = []) {
+    var html = ''
+    list.forEach(function(d) {
+      html += `
+        <div class="row">
+            <div class="table_item_id">${d.id}</div>
+            <div class="table_item_name">${d.owner}</div>
+            <div class="table_item_type">${d.dtype}</div>
+            <div class="table_item_status">${d.status}</div>
+            <div class="table_item_time">${d.create_time}</div>
+            <div class="table_item_action"><button onclick="resetPwd('${d.id}')" class="btn btn-primary btn-sm">重置密码</button></div>
+        </div>
+      `
+    })
+    $('#rows').html(html)
+  }
+
+  function addDevice() {
+    var obj= new Map()
+    obj["device_id"] = document.getElementById("device_id").value;
+    obj["owner"] = document.getElementById("owner").value;
+    obj["memo"] = document.getElementById("owner").value;
+    var sel=document.getElementById("box_type");
+    obj["dtype"] = sel.options[sel.selectedIndex].value;
+    if (obj["device_id"].length == 0 || obj["owner"].length == 0){
+      return
+    }
+
+    var s=JSON.stringify(obj);
+    $("#add_device").css("visibility", "hidden");
+    var words = CryptoJS.enc.Utf8.parse(s); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/mediamgr/addDevice?t=' + base64;
+    $.ajax({
+      url: url,
+      success(res) {
+        alert('Success!');
+        window.location.reload();
+      },
+      error() {
+        alert('Add failed！');
+        $('#myModal').modal('hide');
+      }
+    })
+
+  }
+
+  function resetPwd(device_id){
+    var url='/mediamgr/resetPwd?t=' + device_id;
+    $.ajax({
+      url: url,
+      success(res) {
+        alert(res);
+      },
+      error() {
+        alert('Reset password failed！');
+      }
+    })
+
+  }
+
+  function searchList() {
+    var searchRes = []
+    var word = $('#search').val();
+    console.log(word);
+    if (word) {
+      deviceList.forEach(function(item) {
+        if (item.demo.indexOf(word) > -1 || item.id.indexOf(word) > -1 || item.owner.indexOf(word) > -1) {
+          searchRes.push(item)
+        }
+      });
+      generateList(searchRes);
+    } else {
+      generateList(deviceList)
+    }
+  }
+
+</script>
+</body>
+</html>

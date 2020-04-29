@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="/src/css/bootstrap.css">
+    <link rel="stylesheet" href="/src/css/layui.css">
+    <link rel="stylesheet" href="/src/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" style="color: #dbdbdb;"><img style="width: 25px; height: 25px;"  class="title-icon" src="/src/images/menu/wifi.svg" alt="">后台管理</div>
+        <!-- 头部区域 -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <!--<img src="http://t.cn/RCzsdCq" class="layui-nav-img">-->
+                    Admin
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <!--<div class="layui-side layui-bg-black">-->
+        <!--<div class="layui-side-scroll" id="menu">-->
+            <!--&lt;!&ndash; 左侧导航区域（可配合layui已有的垂直导航） &ndash;&gt;-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="layui-body" style="background-color: #F2F2F2; width: 100%; left: 0;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 20px;">
+            <div style="background-color: #fff; padding: 10px 30px;">
+                <div style="display: flex; justify-content: space-between">
+                    <button onclick="addAction()" type="button" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button>
+                    <!--<div style="display: flex; justify-content: flex-end; align-items: center; border: 1px solid #dddddd;">-->
+                    <!--<i class="layui-icon" style="margin:0 10px;">&#xe615;</i>-->
+                    <!--<input style="max-width: 250px; border: none;" type="text" name="title" autocomplete="off" placeholder="" class="layui-input">-->
+                    <!--</div>-->
+                </div>
+                <div class="table">
+                    <div class="table_head">
+                        <div>类型</div>
+                        <div>源</div>
+                        <div>目的</div>
+                        <div>操作</div>
+                    </div>
+                    <div id="staticList">
+
+                    </div>
+                </div>
+
+
+                <div class="table">
+                    <div class="table_head">
+                        <div>类型</div>
+                        <div>源</div>
+                        <div>目的</div>
+                        <div>时长</div>
+                        <div>带宽</div>
+                    </div>
+                    <div id="dynamicList">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        ©
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal_body_row">
+                        <div style="width: 70px">type</div>
+                        <div>
+                            <select id="type">
+                                <option selected value="tcp">tcp</option>
+                                <option value="udp">udp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal_body_row"><div style="width: 70px">Source</div><div><input style="width: 170px" type="text" id="source" /></div></div>
+                    <div class="modal_body_row"><div style="width: 70px">Destination</div><div><input style="width: 170px" type="text" id="destination" /></div></div>
+                </div>
+                <div class="modal_footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="join_wifi" onclick="addAction()" type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/src/layui.js"></script>
+<script src="/src/jquery.js"></script>
+<script src="/src/bootstrap.js"></script>
+<script src="/src/main.js"></script>
+<script>
+  _generateMenuList('menu');
+
+  function showModal() {
+    $('#myModal').modal({});
+  }
+
+  var staticList = [];
+  var dynamicList = [];
+
+  {% for _, d in ipairs(tcpMap) do %}
+        staticList.push({
+          source: '{{d.Source}}',
+          destination: '{{d.Destination}}',
+          type: 'tcp'
+        })
+  {% end %}
+
+  {% for _, d in ipairs(udpConnections) do %}
+      staticList.push({
+        source: '{{d.Source}}',
+        destination: '{{d.Destination}}',
+        type: 'udp'
+      })
+  {% end %}
+
+  {% for _, d in ipairs(tcpConnections) do %}
+        dynamicList.push({
+          source: '{{d.From}}',
+          destination: '{{d.Destination}}',
+          duration: '{{d["Duration(Sec)"]}}',
+          streamBitrate: '{{d["SendRate(Bps)"]}}',
+          type: 'tcp'
+        })
+  {% end %}
+
+  {% for _, d in ipairs(udpConnections) do %}
+      dynamicList.push({
+        source: '{{d.Source}}',
+        destination: '{{d.Destination}}',
+        duration: '{{d.Duration}}',
+        streamBitrate: '{{d.StreamBitrate}}',
+        type: 'udp'
+      })
+  {% end %}
+
+  var staticHtml = ''
+  staticList.forEach(function(d) {
+    staticHtml += `
+    <div class="row">
+        <div>${d.type}</div>
+        <div>${d.source}</div>
+        <div>${d.destination}</div>
+        <div><button onclick="fn_removetcpAction('${d.source}')" class="btn btn-primary btn-sm">删除</button></div>
+    </div>
+    `
+  });
+  $('#staticList').html(staticHtml);
+
+  var dynamicHtml = ''
+  dynamicList.forEach(function(d) {
+    dynamicHtml += `
+    <div class="row">
+        <div>${d.type}</div>
+        <div>${d.source}</div>
+        <div>${d.destination}</div>
+        <div>${d.duration}</div>
+        <div>${d.streamBitrate}</div>
+    </div>
+    `
+  });
+  $('#dynamicList').html(dynamicHtml);
+
+  function addAction(){
+    var obj= new Map()
+    var sel = document.getElementById("type");
+    var curType = sel.options[sel.selectedIndex].value;
+    obj["Type"]=curType;
+    obj["Source"] = document.getElementById("source").value;
+    obj["Destination"] = document.getElementById("destination").value;
+    if(obj["Source"].length ==0 || obj["Destination"].length == 0){
+      return;
+    }
+    var s=JSON.stringify(obj);
+    var words = CryptoJS.enc.Utf8.parse(s); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/unitystream/addAction?t=' + base64;
+
+    $.ajax({
+      url: url,
+      success(res) {
+        alert(res)
+        window.location.reload()
+      }
+    })
+  }
+
+  function fn_removetcpAction(source){
+    var obj= new Map();
+    obj["Source"] = source;
+    var s=JSON.stringify(obj)
+    var words = CryptoJS.enc.Utf8.parse(s); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/unitystream/removeTcpAction?t=' + base64;
+    $.ajax({
+      url: url,
+      success(res) {
+        alert('Remove success!' + res);
+        window.location.reload()
+      },
+      error() {
+        alert('Remove failed!');
+      }
+    })
+  }
+
+  function fn_removeudpAction(source){
+    var obj= new Map()
+    obj["Source"] = source
+    var s=JSON.stringify(obj)
+    var words = CryptoJS.enc.Utf8.parse(s); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/unitystream/removeUdpAction?t=' + base64;
+    $.ajax({
+      url: url,
+      success(res) {
+        alert('Remove success!' + res);
+        window.location.reload()
+      },
+      error() {
+        alert('Remove failed!');
+      }
+    })
+  }
+
+</script>
+</body>
+</html>

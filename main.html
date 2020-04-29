@@ -10,7 +10,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
-    <div class="layui-logo" style="color: #dbdbdb;"><img class="title-icon" src="/src/images/menu/wifi.svg" alt="">后台管理</div>
+    <div class="layui-logo" style="color: #dbdbdb;"><img style="width: 25px; height: 25px;"  class="title-icon" src="/src/images/menu/wifi.svg" alt="">后台管理</div>
     <!-- 头部区域 -->
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
@@ -40,7 +40,7 @@
           <div class="layui-card">
             <div class="layui-card-header">当前使用设备数</div>
             <div class="layui-card-body">
-              23
+              {{ online_num }}
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
           <div class="layui-card">
             <div class="layui-card-header">设备总数</div>
             <div class="layui-card-body">
-              33
+              {{ all_num }}
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
           <div class="layui-card">
             <div class="layui-card-header">国内服务器地址</div>
             <div class="layui-card-body">
-              168.10.11.45
+              {{ tunsvr_addr }}
             </div>
           </div>
         </div>
@@ -74,10 +74,6 @@
 <script>
   _generateMenuList('menu');
   //JavaScript代码区域
-  layui.use('element', function(){
-    var element = layui.element;
-
-  });
 </script>
 </body>
 </html>

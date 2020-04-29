@@ -6,10 +6,13 @@
     <title>后台管理</title>
     <link rel="stylesheet" href="/src/css/layui.css">
     <link rel="stylesheet" href="/src/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
 </head>
 <body class="layui-layout-body">
 
-<divbg.jpg>
+<div>
     <!-- 内容主体区域 -->
     <img style="position: absolute; width: 100vw; height: 100vh; display: block;" src="/src/images/bg.jpg" alt="">
     <div style="width: 300px; position: absolute; top: 50vh; left: 50vw; margin-left: -150px; margin-top: -250px;">
@@ -18,16 +21,13 @@
             <div style="font-size: 25px; color: #fff; text-align: center;">后台管理</div>
         </div>
         <div>
-            <input id="password" type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            <input id="password" type="password" name="password" placeholder="请输入密码" value="goodlife" autocomplete="off" class="layui-input">
             <div id="err" style="font-size: 13px; color: #e30000"></div>
         </div>
         <button id="loginBtn" style="width: 100%; margin-top: 20px;" type="button" class="layui-btn">登录</button>
     </div>
-</divbg.jpg>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
 <script src="/src/main.js"></script>
 <script src="/src/layui.js"></script>
 <script>

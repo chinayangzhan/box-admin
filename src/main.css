@@ -1,1 +1,58 @@
+.table_head {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(72,89,117);
+    height: 40px;
+    color: #fff;
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 40px;
+    text-align: center;
+}
+.row:nth-child(odd) {
+    background-color: rgb(241,247, 253);
+}
+.row div {
+    width: 33.33%;
+}
+
+.table {
+    margin-bottom: 40px;
+}
+
+.table_head div {
+    text-align: center;
+}
+
+.modal_footer {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+}
+
+.modal-content {
+    width: 320px;
+}
+
+.modal_footer button {
+    font-size: 20px;
+    width: 105px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.modal_body_row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal_body_row div {
+    margin-bottom: 20px;
+}
+
 

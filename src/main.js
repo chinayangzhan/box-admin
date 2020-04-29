@@ -6,22 +6,29 @@
 *
 */
 
-var _baseUrl="/admin/";
+var _baseUrl="/mediamgr/";
 
 function _generateMenuList(menuEleId) {
+  var is_home = false
+  if (window.location.pathname.split('/').length > 2) {
+    is_home = window.location.pathname.split('/')[2].length < 3
+  }
   var menu = `
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes('home') ? 'layui-this' : ''}">
-          <a href="/home.html"><img class="menu-icon" src="./src/images/menu/home.svg" alt="">首页</a>
+        <li class="layui-nav-item layui-nav-itemed ${ is_home ? 'layui-this' : ''}">
+          <a href="/mediamgr/"><img class="menu-icon" src="./src/images/menu/home.svg" alt="">首页</a>
         </li>
-        <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes('management') ? 'layui-this' : ''}">
-          <a href="/management.html"><img class="menu-icon" src="./src/images/menu/manage.svg" alt="">设备管理</a>
+        <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes(
+      'devices') ? 'layui-this' : ''}">
+          <a href="/mediamgr/devices"><img class="menu-icon" src="./src/images/menu/manage.svg" alt="">设备管理</a>
         </li>
-        <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes('object') ? 'layui-this' : ''}">
-          <a href="/object.html"><img class="menu-icon" src="./src/images/menu/test.svg" alt="">目的管理</a>
+        <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes(
+      'groups') ? 'layui-this' : ''}">
+          <a href="/mediamgr/groups"><img class="menu-icon" src="./src/images/menu/test.svg" alt="">目的管理</a>
         </li>
-        <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes('unity_stream') ? 'layui-this' : ''}">
-          <a href="/unity_stream.html"><img class="menu-icon" src="./src/images/menu/cloud1.svg" alt="">UnityStream</a>
+        <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes(
+      'unitystream') ? 'layui-this' : ''}">
+          <a href="/mediamgr/unitystream"><img class="menu-icon" src="./src/images/menu/cloud1.svg" alt="">UnityStream</a>
         </li>
       </ul>
   `;

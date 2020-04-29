@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=no"/>
+    <title>连接无线网络</title>
+    <link rel="stylesheet" href="/test1/mobile/css/bootstrap.css">
+    <link rel="stylesheet" href="/test1/mobile/css/main.css">
+</head>
+<body>
+<div id="header">
+    <div id="goBack"><img src="/test1/mobile/images/back.png" alt=""></div>
+    <div id="header_title">设置</div>
+</div>
+<div class="wifi_title">
+    <div style="min-width: 250px;">当前无线网络</div>
+    <div id="cur_ssid" style="margin-left: 20px" class="text_blue">{{ cur_ssid }}</div>
+</div>
+<div class="wifi_tip">请选择您要连入的无线网络</div>
+<div id="wifi_list" class="wifi_list">
+ <h2>Loading...</h2>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal_title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <input id="password" type="text" placeholder="请输入密码">
+            </div>
+            <div class="modal_footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="join_wifi" type="button" class="btn btn-primary">加入</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+<script src="/test1/mobile/js/jquery.js"></script>
+<script src="/test1/mobile/js/bootstrap.js"></script>
+<script>
+  var rootDir="/usr/bin/tuncnt/";
+  var global_wifi_obj_str = "{}";
+  var global_wifi_name = "";
+  var global_wifi_map = {};
+
+
+  function showWifi() {
+    var cmd = rootDir + "getWifiScan.lua";
+    var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/cgi-bin/shell?' + base64;
+    $.ajax({
+      url: url,
+      success(res) {
+        var obj = JSON.parse(res);
+        generateWifiTable(obj)
+      },
+      error(er) {
+        var err = JSON.parse(er);
+        alert('Get wifi list error: ' + err)
+      }
+    })
+  }
+
+  showWifi();
+  setInterval(function() {
+    showWifi();
+  }, 10* 1000);
+
+  setInterval("getWifiStatus()", 2000);
+
+  function generateWifiTable(list) {
+    if (list.length) {
+      var table = '';
+      list.forEach(function(obj) {
+        var objStr = JSON.stringify(obj);
+        objStr = objStr.replace(/"/g, "'");
+        var wifi_name = obj["ESSID"];
+        var quality = obj["Quality"];
+        var wifi_quality = '/test1/mobile/images/wifi_0.png';
+
+        global_wifi_map[wifi_name] = obj
+
+        if (0 < quality && quality <= 25) {
+          wifi_quality = '/test1/mobile/images/wifi_1.png';
+        }
+
+        if (25 < quality && quality <= 50) {
+          wifi_quality = '/test1/mobile/images/wifi_2.png';
+        }
+
+        if (50 < quality && quality <= 75) {
+          wifi_quality = '/test1/mobile/images/wifi_3.png';
+        }
+
+        if (75 < quality && quality <= 100) {
+          wifi_quality = '/test1/mobile/images/wifi_4.png';
+        }
+
+        table += `
+        <div onclick="joinWifi('${wifi_name}')" class="wifi_item" data-toggle="modal" data-target="#myModal">
+            <div class="wifi_checked" style="color: green;">${wifi_name == '{{ cur_ssid }}' ? '✔' : ''}️</div>
+            <div class="wifi_line">
+                <div class="wifi_name" style="font-size: 25px;">${wifi_name}</div>
+                <div class="wifi_icons">
+                    <img src="/test1/mobile/images/lock.png" alt="">
+                    <img src="${wifi_quality}" alt="">
+                    <img src="/test1/mobile/images/info.png" alt="">
+                </div>
+            </div>
+        </div>
+        `
+      });
+      $('#wifi_list').html(table)
+    }
+  }
+
+  function joinWifi(wifi_name) {
+    global_wifi_name = wifi_name;
+    global_wifi_obj_str = JSON.stringify(global_wifi_map[wifi_name]);
+    $("#password").val('');
+    var words = CryptoJS.enc.Utf8.parse(wifi_name); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/cgi-bin/get_wifipwd?' + base64;
+    $('#myModalLabel').html(wifi_name);
+    $.ajax({
+      url: url,
+      success(res) {
+        $("#password").val(res)
+      },
+      error(e){
+        console.log('获取wifi密码出错', JSON.parse(e))
+      }
+    })
+  }
+
+  $('#join_wifi').on('click', function() {
+    $("#cur_ssid").html(global_wifi_name + "  Connecting");
+    var essid=$("#cur_ssid").text()
+    var pwd=$("#password").val()
+    var obj = global_wifi_map[global_wifi_name];
+    obj["key"]=pwd
+    var obj_str = JSON.stringify(obj)
+    var words = CryptoJS.enc.Utf8.parse(obj_str); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/cgi-bin/addwire?' + base64;
+    $.ajax({
+      url: url,
+      success(res) {
+        $("#cur_ssid").html(global_wifi_name);
+        $("#myModal").modal('hide')
+      },
+      error(err) {
+        console.error('Join wifi error:', JSON.parse(err))
+      }
+    })
+  });
+
+  function getWifiStatus() {
+    var cmd= 'wifi status | jsonfilter -e \'@.radio0.interfaces[@.config.mode="sta"].config.ssid\''
+    var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+    var url='/cgi-bin/shell?' + base64;
+    $.ajax({
+      url: url,
+      success(curSSID) {
+        if (curSSID.length == 0) {
+          $("#cur_ssid").html("-");
+        } else {
+          var cmd ='ubus call network.interface.mywwan status';
+          var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
+          var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
+          var url='/cgi-bin/shell?' + base64;
+          $.ajax({
+            url: url,
+            success(res){
+              var curWifiInfo= JSON.parse(res);
+              if( !curWifiInfo["up"]){
+                $("#cur_ssid").html(curSSID + "  Connecting");
+              } else {
+                $("#cur_ssid").html(curSSID + "  Up link:"+ curWifiInfo["ipv4-address"][0]["address"]);
+              }
+            }
+          })
+        }
+      }
+    })
+  }
+
+</script>
+</html>

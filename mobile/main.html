@@ -45,10 +45,9 @@
 <script src="js/switch.js"></script>
 <script src="js/main.js"></script>
 <script>
-  $('#myScheme').simpleSwitch({
-    'theme': 'Green',
-  });
-  $('#myScheme').on('click', function() {
+    $('#myScheme').simpleSwitch()
+
+  $('#myScheme').on('change', function() {
     fn_switch_speedmode();
   })
 
@@ -63,22 +62,22 @@
   updateStatus(box_idc_status, idc_svr_status, speed_modal);
 
   function updateStatus(box_idc_status, idc_svr_status, speed_modal) {
-    if (box_idc_status == true && idc_svr_status == 'Running') {
+    if (box_idc_status == 'true' && idc_svr_status == 'true') {
       $('#status_img').attr('src', 'images/all_good.jpg');
     }
-    if (box_idc_status != true && idc_svr_status == 'Running') {
+    if (box_idc_status != 'true' && idc_svr_status == 'true') {
       $('#status_img').attr('src', 'images/first_bad.jpg');
     }
-    if (box_idc_status == true && idc_svr_status != 'Running') {
-      $('#status_img').attr('src', 'images/second_bad.jpg');
+    if (box_idc_status == 'true' && idc_svr_status != 'true') {
+      $('#status_img').attr('src', 'images/second_bad.jpeg');
     }
-    if (box_idc_status != true && idc_svr_status != 'Running') {
+    if (box_idc_status != 'true' && idc_svr_status != 'true') {
       $('#status_img').attr('src', 'images/all_bad.jpg');
     }
     if (speed_modal == 'off') {
-      $('#myScheme').attr('checked', false);
+      $('#myScheme').switchToggle(false)
     } else {
-      $('#myScheme').attr('checked', true);
+      $('#myScheme').switchToggle(true)
     }
   }
 
@@ -88,8 +87,8 @@
       url: url,
       success: function(res) {
         var obj = JSON.parse(res);
-        var box_idc_status = obj.box_idc_status;
-        var idc_svr_status = obj.idc_svr_status;
+        var box_idc_status = `${obj.box_idc_status}`;
+        var idc_svr_status = `${obj.idc_svr_status}`;
         var speed_modal = obj.speed_modal;
         updateStatus(box_idc_status, idc_svr_status, speed_modal);
       },
@@ -115,9 +114,11 @@
         if (obj['Status'] == 'OK') {
           var scheme = $('#myScheme').attr('checked');
           if (scheme) {
-            $('#myScheme').attr('checked', false);
+            console.log('on to off', scheme);
+            $('#myScheme').switchToggle(false)
           } else {
-            $('#myScheme').attr('checked', true);
+            console.log('off to on', scheme);
+            $('#myScheme').switchToggle(true)
           }
         } else {
           alert('Failed');
