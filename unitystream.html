@@ -52,11 +52,11 @@
 
                 </div>
                 {% for _, d in ipairs(unitystreams) do %}
-                <div class="row">
+                <div class="my_row">
                     <div>{{d.name}}</div>
                     <div>{{d.address}}</div>
                     <div><button class="btn btn-primary btn-sm" style="width: 50px; height: 31px; padding: 0;">
-                        <a style="width: 100%; height: 100%; text-decoration: none; color: #fff; display: flex; justify-content: center; align-items: center;" href="/unitystream" target="_blank">管理</a>
+                        <a style="width: 100%; height: 100%; text-decoration: none; color: #fff; display: flex; justify-content: center; align-items: center;" href="http://{{d.address}}?t={{sessionid}}" target="_blank">管理</a>
                     </button></div>
                 </div>
                 {% end %}

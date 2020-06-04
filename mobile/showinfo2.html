@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)http://182.87.223.29:1080/cgi-bin/showinfo -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+
+    <script type="text/JavaScript">
+      xmlHttp=null;
+      addUrl="../cgi-bin/addurl";
+      removeUrl="../cgi-bin/removeurl";
+      getItemsUrl="../cgi-bin/getitems";
+
+      function syncRequest(url){
+        if(xmlHttp == null){
+          try {// Firefox, Opera 8.0+, Safari, IE7
+            xmlHttp=new XMLHttpRequest();
+          } catch(e) {// Old IE
+            try {
+              xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+            } catch(e) {
+              alert ("Your browser does not support XMLHTTP!");
+              return;
+            }
+          }
+        }
+        xmlHttp.open("GET",url,false);
+        xmlHttp.send(null);
+        return xmlHttp.responseText;
+      }
+
+      function fn_addUrl(){
+        url = document.getElementById("newurl").value;
+        req = addUrl + "?url=" + url;
+        content = syncRequest(req);
+        //alert(req)
+        //alert(content)
+        document.getElementById("retMessage").innerText=content;
+        fn_showItems();
+      }
+
+      function fn_composeHtmlByItem(item){
+        //var ret="<div id=" + item[".name"] + ">" + item[".name"];
+        var ret="<div id=" + item[".name"] + ">";
+        ret = ret + "<b>" + item["url"]+ "</b>";
+        ret = ret + "<button onclick=fn_removeUrl('" + item[".name"] + "')>Remove It</button> </b><p>";
+        ret = ret + "<table width=100%><tr>" + "<td><img src=../rrd/" + item["prefix"] + "_1.png?" + Math.random() + "  /></td>";
+        ret = ret + "<td><img src=../rrd/" + item["prefix"] + "_2.png?" + Math.random() +" /></td>";
+        ret = ret + "<td><img src=../rrd/" + item["prefix"] + "_3.png?" + Math.random() + "/></td>" + "</tr></table>";
+        ret = ret + "</div>";
+        return ret;
+      }
+
+      function fn_eth0(){
+        var ret="<table width=100%><tr>" + "<td><img src=../rrd/eth0_1.png?" + Math.random() + "  /></td>";
+        ret = ret + "<td><img src=../rrd/eth0_2.png?" + Math.random() + "  /></td>";
+        ret = ret + "<td><img src=../rrd/eth0_3.png?" + Math.random() + "  /></td>";
+        ret = ret + "</tr></table>"
+        document.getElementById("eth0Info").innerHTML=ret;
+      }
+
+      function fn_showItems(){
+        fn_eth0();
+        var content = syncRequest(getItemsUrl);
+        //alert(content);
+        var obj= JSON.parse(content);
+        var htmlContent="";
+        for(var k in obj){
+          htmlContent = htmlContent + fn_composeHtmlByItem(obj[k]);
+        }
+        document.getElementById("itemInfos").innerHTML=htmlContent;
+
+      }
+
+      function fn_removeUrl(itemid){
+        req = removeUrl +"?itemid="+itemid;
+        content = syncRequest(req);
+        document.getElementById("retMessage").innerText=content
+        document.getElementById(itemid).innerText=""
+
+      }
+
+      var refreshInterval = self.setInterval("fn_showItems()",20000);
+    </script>
+</head>
+<body>
+<center><h1>Test Page - 01416A
+</h1></center>
+Pls input download url:<br>
+<input type="text" id="newurl" value="">
+<button onclick="fn_addUrl()">Add Url</button>
+<pre>Examples:
+http(s)://[domainr|ip](:port)/path
+[domain|ip]/path  (default schema is http)
+ftp://[domain|ip](:port)/path
+ftp://user:pwd@[domain|ip](:path)/path
+
+ftp://ftptest:123456@59.63.200.97/1M (江西)
+http://38.21.234.75/1M (美国)
+</pre>
+<font color="red"> <div id="retMessage"></div> </font>
+<hr>
+eth0's statistics:<p>
+</p><div id="eth0Info"><table width="100%"><tbody><tr><td><img src="http://182.87.223.29:1080/rrd/eth0_1.png?0.8396441062291078"></td><td><img src="http://182.87.223.29:1080/rrd/eth0_2.png?0.4017843949779223"></td><td><img src="http://182.87.223.29:1080/rrd/eth0_3.png?0.9576130234923255"></td></tr></tbody></table></div>
+<p>
+</p><div id="itemInfos"></div>
+<script type="text/JavaScript">
+  fn_showItems();
+</script>
+
+
+
+
+</body></html>

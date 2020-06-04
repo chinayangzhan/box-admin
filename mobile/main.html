@@ -57,11 +57,11 @@
 
   var box_idc_status = '{{box_idc_status}}';
   var idc_svr_status = '{{idc_svr_status}}';
-  var speed_modal = '{{speed_modal}}';
+  var speed_mode = '{{speed_mode}}';
 
-  updateStatus(box_idc_status, idc_svr_status, speed_modal);
+  updateStatus(box_idc_status, idc_svr_status, speed_mode);
 
-  function updateStatus(box_idc_status, idc_svr_status, speed_modal) {
+  function updateStatus(box_idc_status, idc_svr_status, speed_mode) {
     if (box_idc_status == 'true' && idc_svr_status == 'true') {
       $('#status_img').attr('src', 'images/all_good.jpg');
     }
@@ -74,7 +74,7 @@
     if (box_idc_status != 'true' && idc_svr_status != 'true') {
       $('#status_img').attr('src', 'images/all_bad.jpg');
     }
-    if (speed_modal == 'off') {
+    if (speed_mode == 'off') {
       $('#myScheme').switchToggle(false)
     } else {
       $('#myScheme').switchToggle(true)
@@ -89,8 +89,8 @@
         var obj = JSON.parse(res);
         var box_idc_status = `${obj.box_idc_status}`;
         var idc_svr_status = `${obj.idc_svr_status}`;
-        var speed_modal = obj.speed_modal;
-        updateStatus(box_idc_status, idc_svr_status, speed_modal);
+        var speed_mode = obj.speed_mode;
+        updateStatus(box_idc_status, idc_svr_status, speed_mode);
       },
       error: function(error) {
         var obj = JSON.parse(res);
@@ -101,8 +101,16 @@
   }
 
   function fn_update_pic() {
-    var s = '<img src=/netcard_temp.png?' + Math.random() + '> </img>';
+    var s = '<img id="main_image" onload="image_loaded()" src=/netcard_temp.png?' + Math.random() + '> </img>';
     $('#netcard_speed').html(s);
+  }
+
+    fn_update_pic();
+
+  function image_loaded() {
+    setTimeout(function() {
+      $('#main_image').attr('src', `/netcard_temp.png?${Math.random()}`)
+    }, 1000)
   }
 
   function fn_switch_speedmode() {
@@ -132,6 +140,5 @@
   }
 
   setInterval('getStatus()', 5000);
-  setInterval('fn_update_pic()', 1000);
 </script>
 </html>

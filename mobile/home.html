@@ -46,11 +46,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
 <script src="/test1/mobile/js/jquery.js"></script>
 <script src="/test1/mobile/js/bootstrap.js"></script>
+<script src="js/main.js"></script>
 <script>
   var rootDir="/usr/bin/tuncnt/";
   var global_wifi_obj_str = "{}";
-  var global_wifi_name = "";
+  var global_wifi_name = '{{ cur_ssid }}';
   var global_wifi_map = {};
+  var last_wifi_list = [];
 
 
   function showWifi() {
@@ -62,6 +64,7 @@
       url: url,
       success(res) {
         var obj = JSON.parse(res);
+        last_wifi_list = obj;
         generateWifiTable(obj)
       },
       error(er) {
@@ -108,7 +111,7 @@
 
         table += `
         <div onclick="joinWifi('${wifi_name}')" class="wifi_item" data-toggle="modal" data-target="#myModal">
-            <div class="wifi_checked" style="color: green;">${wifi_name == '{{ cur_ssid }}' ? '✔' : ''}️</div>
+            <div class="wifi_checked" style="color: green;">${wifi_name == global_wifi_name ? '✔' : ''}️</div>
             <div class="wifi_line">
                 <div class="wifi_name" style="font-size: 25px;">${wifi_name}</div>
                 <div class="wifi_icons">
@@ -158,6 +161,7 @@
       success(res) {
         $("#cur_ssid").html(global_wifi_name);
         $("#myModal").modal('hide')
+        generateWifiTable(last_wifi_list);
       },
       error(err) {
         console.error('Join wifi error:', JSON.parse(err))

@@ -7,17 +7,17 @@
     color: #fff;
 }
 
-.row {
+.my_row {
     display: flex;
     justify-content: space-around;
     align-items: center;
     height: 40px;
     text-align: center;
 }
-.row:nth-child(odd) {
+.my_row:nth-child(odd) {
     background-color: rgb(241,247, 253);
 }
-.row div {
+.my_row div {
     width: 33.33%;
 }
 
@@ -27,6 +27,7 @@
 
 .table_head div {
     text-align: center;
+    width: 33.33%;
 }
 
 .modal_footer {

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=no"/>
+    <title>测速</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: rgb(243,245,246);
+            overflow-x: hidden;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .color_blue{
+            color: rgb(0, 108, 221);
+        }
+        .tab_item {
+            width: 33.33%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            font-size: 30px;
+        }
+        .active {
+            color: rgb(0, 108, 221);
+            border-bottom: 3px solid rgb(0, 108, 221);
+        }
+    </style>
+</head>
+<body style="padding-top: 0;">
+<div style="font-size: 28px; height: 80px; text-indent: 30px; line-height: 80px;">
+测试线路
+</div>
+<div style="background: #fff; padding: 30px; box-sizing: border-box;">
+    <div style="display: flex;justify-content: space-between;align-items: center; margin-bottom: 10px;">
+        <div style="font-size: 28px">服务器测速对比</div>
+        <div
+            id="action_btn"
+            style="display: flex;
+            width: 120px;
+            height: 50px;
+            font-size: 28px;
+            justify-content: center;
+            align-items: center;
+            color: rgb(0, 108, 221);
+            border-radius: 5px;
+            border: 2px solid rgb(0, 108, 221);
+            "
+            onclick="toggleTest()"
+        >
+            开始
+        </div>
+    </div>
+    <div id="speed_img" style="width: 100%; min-height: 265px; position: relative">
+        <div id="image_1" style="width: 100%;position: absolute"></div>
+        <div id="image_2" style="width: 100%;position: absolute"></div>
+    </div>
+</div>
+<div style="display: flex; justify-content: space-around; align-items: center;">
+    <div id="minute" class="tab_item active">30分钟</div>
+    <div id="day" class="tab_item" style="border-left: 1px solid rgb(243,245,246); border-right: 1px solid rgb(243,245,246);">日</div>
+    <div id="week" class="tab_item">周</div>
+</div>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+<script src="/test1/mobile/js/jquery.js"></script>
+<script>
+  var isStart = false;
+  var activeIndex = 1;
+  var imgInterval = null;
+  var refreshImgInterval = 20 * 1000;
+
+  function toggleTest() {
+    isStart = !isStart;
+    if (isStart) {
+      $('#action_btn').html('停止')
+    } else {
+      $('#action_btn').html('开始')
+    }
+    setCompareTest(isStart);
+  }
+
+  function setCompareTest(bEnable){
+    var cmd;
+    if(bEnable){
+      cmd=cmd="uci set rrd_config.global.enable=1;uci commit rrd_config"
+      setImg(activeIndex)
+    }else{
+      cmd="uci set rrd_config.global.enable=0; uci commit rrd_config"
+      imgInterval = null;
+      $("#speed_img").html('')
+    }
+    var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
+    var base64 = CryptoJS.enc.Base64.stringify(words);
+    var url='/cgi-bin/shell?' + base64;
+    $.ajax({
+      url: url,
+      success(res) {
+        console.log('测试状态：' +bEnable+ " ；返回值：" + res, res)
+      },
+      error(err) {
+        console.error('Join wifi error:', JSON.parse(err))
+      }
+    })
+  }
+
+  function setImg(index=1) {
+    $("#speed_img").html(`<img id="main_image" style="width: 100%" onload="loadImage()" src="/rrd/down_compare_${index}.png?${Math.random()}" alt="">`);
+  }
+
+  function loadImage() {
+    console.log('image loaded!')
+    imgInterval = setTimeout(function() {
+      $("#main_image").attr('src', `/rrd/down_compare_${activeIndex}.png?${Math.random()}`)
+    }, refreshImgInterval)
+  }
+
+  var activeIndex = 1;
+
+  $("#minute").click(function(){
+    $("#minute").addClass("active");
+    $("#day").removeClass("active");
+    $("#week").removeClass("active");
+    activeIndex = 1;
+    setImg(activeIndex)
+  });
+
+  $("#day").click(function(){
+    $("#day").addClass("active");
+    $("#minute").removeClass("active");
+    $("#week").removeClass("active");
+    activeIndex = 2;
+    setImg(activeIndex)
+  });
+
+  $("#week").click(function(){
+    $("#week").addClass("active");
+    $("#minute").removeClass("active");
+    $("#day").removeClass("active");
+    activeIndex = 3;
+    setImg(activeIndex)
+  });
+
+</script>
+</html>

@@ -16,19 +16,19 @@ function _generateMenuList(menuEleId) {
   var menu = `
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
         <li class="layui-nav-item layui-nav-itemed ${ is_home ? 'layui-this' : ''}">
-          <a href="/mediamgr/"><img class="menu-icon" src="./src/images/menu/home.svg" alt="">首页</a>
+          <a href="/mediamgr/"><img class="menu-icon" src="/src/images/menu/home.png" alt="">首页</a>
         </li>
         <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes(
       'devices') ? 'layui-this' : ''}">
-          <a href="/mediamgr/devices"><img class="menu-icon" src="./src/images/menu/manage.svg" alt="">设备管理</a>
+          <a href="/mediamgr/devices"><img class="menu-icon" src="/src/images/menu/shebei.png" alt="">设备管理</a>
         </li>
         <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes(
       'groups') ? 'layui-this' : ''}">
-          <a href="/mediamgr/groups"><img class="menu-icon" src="./src/images/menu/test.svg" alt="">目的管理</a>
+          <a href="/mediamgr/groups"><img class="menu-icon" src="/src/images/menu/mudi.png" alt="">目的管理</a>
         </li>
         <li class="layui-nav-item layui-nav-itemed ${window.location.pathname.includes(
       'unitystream') ? 'layui-this' : ''}">
-          <a href="/mediamgr/unitystream"><img class="menu-icon" src="./src/images/menu/cloud1.svg" alt="">UnityStream</a>
+          <a href="/mediamgr/unitystream"><img class="menu-icon" src="/src/images/menu/vps.png" alt="">UnityStream</a>
         </li>
       </ul>
   `;

@@ -43,7 +43,7 @@
                     <button onclick="showModal()" type="button" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button>
                     <div style="display: flex; justify-content: flex-end; align-items: center; border: 1px solid #dddddd;">
                         <i class="layui-icon" style="margin:0 10px;">&#xe615;</i>
-                        <input id="search" oninput="searchList()" style="max-width: 250px; border: none;" type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input id="search" oninput="searchList()" style="max-width: 250px; border: none;" type="text" name="title" autocomplete="off" placeholder="搜索" class="layui-input">
                     </div>
                 </div>
                 <div class="table">
@@ -127,13 +127,16 @@
     var html = ''
     list.forEach(function(d) {
       html += `
-        <div class="row">
+        <div class="my_row">
             <div class="table_item_id">${d.id}</div>
             <div class="table_item_name">${d.owner}</div>
             <div class="table_item_type">${d.dtype}</div>
             <div class="table_item_status">${d.status}</div>
             <div class="table_item_time">${d.create_time}</div>
-            <div class="table_item_action"><button onclick="resetPwd('${d.id}')" class="btn btn-primary btn-sm">重置密码</button></div>
+            <div class="table_item_action">
+                <button onclick="resetPwd('${d.id}')" class="btn btn-primary btn-sm">重置密码</button>
+                <button onclick="removeDevice('${d.id}')" class="btn btn-primary btn-sm">删除</button>
+            </div>
         </div>
       `
     })
@@ -175,7 +178,12 @@
     $.ajax({
       url: url,
       success(res) {
-        alert(res);
+        var obj = JSON.parse(res)
+        if(obj["Status"] == "OK"){
+          alert("重置成功")
+        } else {
+          alert("重置失败")
+        }
       },
       error() {
         alert('Reset password failed！');
@@ -183,6 +191,27 @@
     })
 
   }
+
+    function removeDevice(device_id){
+      var url='/mediamgr/removeDevice?t=' + device_id;
+      $.ajax({
+        url: url,
+        success(res) {
+          var obj = JSON.parse(res)
+          if(obj["Status"] == "OK"){
+            alert("删除成功")
+            window.location.reload()
+          } else {
+            alert("删除失败")
+            window.location.reload()
+          }
+        },
+        error() {
+          alert('Remove device failed！');
+        }
+      })
+
+    }
 
   function searchList() {
     var searchRes = []

@@ -15,12 +15,13 @@
     <style>
         body{
             width: 100% !important;
-            max-width: 100%;
+            min-height: 1334px;
         }
     </style>
 </head>
 <body style="padding: 0;">
-<div id="login_main">
+<div id="login_main" style="background-image: url('images/ph-web.png'); background-size: cover; background-repeat: no-repeat">
+    <div style="margin-top: 415px; color: #fff; font-size: 30px;">设备ID：{{box_id}}</div>
     <input type="password" id="login_input" value="goodlife">
     <button id="login_mask">登录</button>
 </div>

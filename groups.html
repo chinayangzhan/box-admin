@@ -52,13 +52,7 @@
                         <div>网络地址</div>
                         <div>操作</div>
                     </div>
-                    {% for _, d in ipairs(groups) do %}
-                        <div class="row" ondblclick="updateGroup('{{d.id}}', '{{d.name}}', '{{d.acc_group}}')">
-                            <div>{{d.name}}</div>
-                            <div>{{ d.acc_group}}</div>
-                            <div><button onclick="removeGroup('{{d.id}}')" class="btn btn-primary btn-sm">删除</button></div>
-                        </div>
-                    {% end %}
+                    <div id="groupTable"></div>
                 </div>
             </div>
         </div>
@@ -95,6 +89,31 @@
 <script>
   _generateMenuList('menu');
 
+  var groupList = [];
+  {% for _, d in ipairs(groups) do %}
+  groupList.push({
+    id: '{{d.id}}',
+    name: '{{d.name}}',
+    acc_group: encodeURIComponent(`{{d.acc_group}}`),
+  })
+  {% end %}
+
+  function generateGroups() {
+    var groupsHtml = '';
+    groupList.forEach(function(d) {
+      groupsHtml += `
+        <div class="my_row" ondblclick="updateGroup('${d.id}')">
+            <div>${d.name}</div>
+            <div>${ decodeURIComponent(d.acc_group)}</div>
+            <div><button onclick="removeGroup('${d.id}')" class="btn btn-primary btn-sm">删除</button></div>
+        </div>
+    `
+    })
+    $('#groupTable').html(groupsHtml)
+  }
+
+  generateGroups();
+
   function showModal() {
     $('#myModal').modal({});
   }
@@ -114,12 +133,15 @@
     $.ajax({
       url: url,
       success(res) {
+        res = JSON.parse(res)
         if(res["Status"] == "OK"){
           alert("添加成功")
           $('#myModal').modal('hide');
           window.location.reload()
         } else {
-
+          alert('添加失败！');
+          $('#myModal').modal('hide');
+          window.location.reload()
         }
 
       },
@@ -135,6 +157,7 @@
     $.ajax({
       url: url,
       success(res) {
+        res = JSON.parse(res)
         if(res["Status"] == "OK") {
           alert("删除成功")
           window.location.reload()
@@ -145,11 +168,14 @@
     });
   }
 
-  function updateGroup(id, name, acc_group) {
-    $('#myModal').modal({});
-    $('#name').val(name);
-    $('#group').val(acc_group);
-
+  function updateGroup(id) {
+    groupList.forEach(function(d) {
+      if(d.id == id) {
+        $('#myModal').modal({});
+        $('#name').val(d.name);
+        $('#group').val(decodeURIComponent(d.acc_group));
+      }
+    })
   }
 
 </script>
