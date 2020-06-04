@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>登录</title>
+    <meta charset="UTF-8">
+    <!--在 web app 应用下状态条（屏幕顶部条）的颜色；(改变顶部状态条的颜色)-->
+    <!--默认值为 default（白色），可以定为 black（黑色）和 black-translucent（灰色半透明）；-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="applicable" content="pc,mobile" />
+    <link rel="stylesheet" href="css/main.css">
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <style>
+        #main{
+            background-image: url('images/login_bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .show_title{
+            width:176px;
+            height:18px;
+            font-size:20px;
+            font-family:PingFangSC-Regular,PingFang SC;
+            font-weight:400;
+            color:rgba(255,255,255,1);
+            line-height:18px;
+            margin: 0 auto;
+            margin-top: 178px;
+            margin-bottom: 67px;
+        }
+        .login_btn {
+            width:327px;
+            height:50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:rgba(0,204,112,1);
+            border-radius:4px;
+            font-size:18px;
+            font-family:PingFangSC-Regular,PingFang SC;
+            font-weight:400;
+            color:rgba(255,255,255,1);
+            margin: 0 auto;
+        }
+        #login_input {
+            width:327px;
+            height:60px;
+            background:rgba(0,0,0,0);
+            border: none;
+            border-bottom: 1px solid rgba(178,178,178,0.27);
+            margin: 0 auto;
+            margin-bottom: 41px;
+            display: block;
+            font-size:16px;
+            font-family:PingFangSC-Regular,PingFang SC;
+            font-weight:400;
+            color:rgba(255,255,255,1);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div class="show_title">设备ID：{{box_id}}</div>
+        <input type="password" id="login_input" value="goodlife">
+        <div class="login_btn">登录</div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/main.js"></script>
+<script>
+  $("#login_mask").on("click", function () {
+    var pwd = $('#login_input')[0].value;
+    if (pwd.length === 0) {
+      alert('请输入密码')
+      return;
+    }
+    var sessionid = _getCookie("sessionid");
+    var passhash = CryptoJS.MD5(pwd).toString();
+    var t = CryptoJS.MD5(sessionid + passhash).toString();
+    var url = _document_root + "doLogin?t=" + t;
+    $.ajax({
+      url: url,
+      success: function (res) {
+        var obj = JSON.parse(res);
+        if (obj["Status"] == "OK") {
+          if (document.referrer.length > 0) {
+            window.location.href = document.referrer;
+          } else {
+            window.location.href = _document_root + "?" + Math.random();
+          }
+        } else {
+          alert(obj["Message"]);
+        }
+      },
+      error: function (error) {
+        var err = JSON.stringify(error)
+        alert(err)
+      }
+    })
+  })
+
+</script>
+</html>

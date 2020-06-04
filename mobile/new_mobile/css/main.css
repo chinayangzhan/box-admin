@@ -1,0 +1,66 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color: #fff;
+    background:rgba(38,30,44,1);
+}
+
+image{
+    display: block;
+}
+
+@media (max-width: 767px)  {  /*{ //<=767的设备 }  手机*/
+    #main {
+        margin: 0 auto;
+        min-height: 100vh;
+        background:linear-gradient(180deg,rgba(38,30,44,1) 0%,rgba(38,30,44,0) 100%);
+        overflow:hidden
+    }
+
+}
+/*@media (min-width: 768px)  { ... col-sm-3... }  { //>=768的设备 }  平板*/
+/*@media (min-width: 992px)  { ... col-md-3...}   { //>=992的设备 }  电脑*/
+@media (min-width: 768px) {
+    #main {
+        max-width: 768px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background:linear-gradient(180deg,rgba(38,30,44,1) 0%,rgba(38,30,44,0) 100%);
+        overflow:hidden
+    }
+
+}
+
+.text_gray {
+    color:rgba(178,178,178,1);
+}
+
+.text_green {
+    color:rgba(0,204,112,1);
+}
+
+.bg_green {
+    background:rgba(0,204,112,1);
+}
+
+.tlg{
+    font-size: 20px;
+}
+
+.tm{
+    font-size: 18px;
+}
+
+.ts{
+    font-size: 16px;
+}
+
+.txs{
+    font-size: 14px;
+}
+
