@@ -14,6 +14,18 @@ image{
     display: block;
 }
 
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #B2B2B2;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #B2B2B2;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #B2B2B2;
+}
+
 @media (max-width: 767px)  {  /*{ //<=767的设备 }  手机*/
     #main {
         margin: 0 auto;

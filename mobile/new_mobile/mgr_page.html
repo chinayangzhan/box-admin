@@ -25,7 +25,11 @@
             margin-top: 20px;
             margin-bottom: 25px;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section_title_label img{
+            display: block;
         }
 
         .title_text {
@@ -41,7 +45,7 @@
             border-bottom: 1px solid rgba(178,178,178,0.27);
             margin: 0 auto;
             display: block;
-            font-size:16px;
+            font-size:14px;
             font-family:PingFangSC-Regular,PingFang SC;
             font-weight:400;
             color:rgba(255,255,255,1);
@@ -64,7 +68,7 @@
             color:rgba(255,255,255,1);
             outline: none;
         }
-        #modify_login_newpwd {
+        #modify_login_newpwd, #modify_wifi_newpwd {
             width:140px;
             height:50px;
             background:rgba(0,204,112,1);
@@ -81,7 +85,7 @@
 <div id="main">
     <div class="section">
         <div class="section_title_label">
-            <img src="images/box.png" />
+            <img style="width: 22px;height: 15px;" src="images/box.png" />
             <div class="title_text">设备</div>
         </div>
         <div class="tm">修改密码</div>
@@ -90,48 +94,37 @@
         <input type="password" class="password_input"  id="login_newpwd2" placeholder="请再输入新密码">
         <div id="modify_login_newpwd" class="bg_green">确定</div>
     </div>
-    <div class="section">
-        <div class="section_title_label">
-            <div style="display: flex">
-                <img src="images/network.png" />
-                <div class="title_text">网络</div>
-            </div>
-            <div class="text_green tm">更多无线网络</div>
-        </div>
-        <div class="as_input">
-            <div>当前无线网路为</div>
-            <div class="text_blue text_green">{{ cur_ssid }}</div>
-        </div>
-    </div>
-    <div id="onlyMobile" style="display: none">
-        <div class="section_title_label">
-            <div>
-                <img src="images/network.png" />
-                <div class="title_text">网络</div>
-            </div>
-            <div class="text_green tm">更多无线网络</div>
-        </div>
+    <!--<div id="onlyMobile" style="display: none">-->
+    <div id="onlyMobile" style="display: block;">
         <div class="section">
-            <div class="password_input">
-                <div style="font-size: 30px">当前无线网路为</div>
-                <div class="text_blue" style="font-size: 30px">{{ cur_ssid }}</div>
+            <div class="section_title_label" style="justify-content: space-between">
+                <div style="display: flex; align-items: center">
+                    <img style="width: 18px;height: 18px;" src="images/network.png" />
+                    <div class="title_text">网络</div>
+                </div>
+                <div class="text_green tm">更多无线网络</div>
+            </div>
+            <div class="as_input">
+                <div>当前无线网路为</div>
+                <div class="text_blue text_green">{{ cur_ssid }}</div>
             </div>
         </div>
-        <div class="text_blue" id="more_wifi" style="font-size: 25px; text-decoration: underline; margin-top: 10px; float: right; margin-right: 25px;">更多无线网络</div>
-        <div class="section_title_label">
-            <img src="images/xinhao.png" />
-            <div class="schedule_title_label_text">WLAN热点</div>
-        </div>
+
         <div class="section">
-            <div class="flex_between">
+            <div class="section_title_label">
+                <img style="width: 19px;height: 12px;" src="images/wifi.png" />
+                <div class="title_text">WLAN热点</div>
+            </div>
+            <div class="as_input" style="border: none;">
                 <div>当前WLAN热点为</div>
-                <div class="text_blue">{{ ap_ssid }}</div>
+                <div class="text_green">{{ ap_ssid }}</div>
             </div>
-            <div style="margin-top: 20px">修改当前WLAN热点密码</div>
-            <input type="text" value="{{ ap_key }}">
-            <input type="password" id="wifi_newpwd" placeholder="请输入新密码">
-            <input type="password" id="wifi_newpwd2" placeholder="请再输入新密码">
+            <div style="margin-top: 20px" class="txs">修改当前WLAN热点密码</div>
+            <input class="password_input" type="text" value="{{ ap_key }}">
+            <input class="password_input" type="password" id="wifi_newpwd" placeholder="请输入新密码">
+            <input class="password_input" type="password" id="wifi_newpwd2" placeholder="请再输入新密码">
             <div id="modify_wifi_newpwd" class="btn_blue">确定</div>
+        </div>
         </div>
     </div>
 
