@@ -38,7 +38,7 @@
             margin-left: 9px;
         }
         .password_input{
-            width:327px;
+            width:100%;
             height:60px;
             background:rgba(0,0,0,0);
             border: none;
@@ -53,7 +53,7 @@
         }
 
         .as_input{
-            width:327px;
+            width:100%;
             height:60px;
             background:rgba(0,0,0,0);
             border: none;
@@ -119,7 +119,7 @@
                 <div>当前WLAN热点为</div>
                 <div class="text_green">{{ ap_ssid }}</div>
             </div>
-            <div style="margin-top: 20px" class="txs">修改当前WLAN热点密码</div>
+            <div style="margin-top: 15px" class="txs">修改当前WLAN热点密码</div>
             <input class="password_input" type="text" value="{{ ap_key }}">
             <input class="password_input" type="password" id="wifi_newpwd" placeholder="请输入新密码">
             <input class="password_input" type="password" id="wifi_newpwd2" placeholder="请再输入新密码">

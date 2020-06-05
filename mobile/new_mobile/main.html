@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=no"/>
+    <title>VIPspeed</title>
+    <meta charset="UTF-8">
+    <!--在 web app 应用下状态条（屏幕顶部条）的颜色；(改变顶部状态条的颜色)-->
+    <!--默认值为 default（白色），可以定为 black（黑色）和 black-translucent（灰色半透明）；-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="applicable" content="pc,mobile" />
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        #header {
+            margin: 0 auto;
+            text-align: center;
+        }
+        #status {
+            width:100%;
+            height:285px;
+            background:rgba(38,30,44,1);
+            box-shadow:0px 6px 40px 0px rgba(0,0,0,0.5);
+        }
+        .speed_box {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 70px;
+        }
+        .status_item {
+            width: 113px;
+            height: 100px;
+            border: 1px solid red;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .speed_name {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            color: #E4E8EB;
+        }
+        .speed_icon {
+            width: 20px;
+            height: 14.4px;
+        }
+        .speed_icon img {
+            width: 100%;
+        }
+
+        .connect_status {
+            width: 89%;
+            border: 1px solid red;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .line {
+            width:13%;
+            height:1px;
+            background:rgba(0,203,111,1);
+            border-radius:100px;
+        }
+
+        footer{
+            font-size: 12px;
+            width:100%;
+            height:78px;
+            background:rgba(38,30,44,1);
+            border-top:1px solid rgba(25,27,33,1);
+            display: flex;
+        }
+        .footer_nav {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer_nav img{
+            width: 22px;
+            height: 23px;
+            display: block;
+            margin-top: 21px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div id="status">
+        <div id="header">
+            VIPspeed
+        </div>
+        <div class="speed_box">
+            <div class="status_item">
+                <div class="speed_num tlg">{{bandwidth_output}}</div>
+                <div class="speed_name">
+                    <div class="ts">上传</div>
+                    <div style="margin-left: 5px;" class="txs text_gray">bps</div>
+                </div>
+                <div class="speed_icon">
+                    <img src="images/speed_up.png" alt="">
+                </div>
+            </div>
+            <div class="status_item">
+                <img src="images/speed_main.png" style="width: 100%;" alt="">
+            </div>
+            <div class="status_item">
+                <div class="speed_num tlg">{{bandwidth_input}}</div>
+                <div class="speed_name">
+                    <div class="ts">下载</div>
+                    <div style="margin-left: 5px;" class="txs text_gray">bps</div>
+                </div>
+                <div class="speed_icon">
+                    <img src="images/speed_down.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--显示连接状态-->
+    <div class="connect_status">
+        <img src="images/box_icon.png" style="width: 44px; height: 28px;" alt="盒子">
+        <div class="line"></div>
+        <img src="images/box_icon.png" style="width: 32px; height: 32px;" alt="当地运营商">
+        <div class="line"></div>
+        <img src="images/box_icon.png" style="width: 44px; height: 28px;" alt="目的地">
+    </div>
+
+
+
+
+    <div class="item">
+        <div class="label">
+            <div class="label_icon"><img src="images/box.jpg"/></div>
+            <div class="label_name">设备ID</div>
+        </div>
+        <div class="text_blue" style="font-size: 30px">{{ box_id }}</div>
+    </div>
+    <div class="item">
+        <div class="label">
+            <div class="label_icon"><img src="images/rock.jpg"/></div>
+            <div class="label_name">加速模式</div>
+        </div>
+        <div><input type="checkbox" name="myScheme" id="myScheme"/></div>
+    </div>
+    <div class="item">
+        <div class="label">
+            <div class="label_icon"><img src="images/speed.jpg"/></div>
+            <div class="label_name">传输速度</div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer_nav">
+        <img style="width: 26px; height: 23px;" src="images/dashboard_icon_green.png" alt="">
+        <div class="text_green">状态</div>
+    </div>
+    <div class="footer_nav">
+        <img src="images/setting_icon_gray.png" alt="">
+        <div class="text_gray">设置</div>
+    </div>
+</footer>
+<!--<div id="netcard_speed" style="height: 500px"></div>-->
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/switch.js"></script>
+<script src="js/main.js"></script>
+<script>
+  $('#myScheme').simpleSwitch()
+
+  $('#myScheme').on('change', function() {
+    fn_switch_speedmode();
+  })
+
+  $("#setting").on('click', function() {
+    window.location.href = '/admin/mgrStatus';
+  });
+
+  var box_idc_status = '{{box_idc_status}}';
+  var idc_svr_status = '{{idc_svr_status}}';
+  var speed_mode = '{{speed_mode}}';
+
+  updateStatus(box_idc_status, idc_svr_status, speed_mode);
+
+  function updateStatus(box_idc_status, idc_svr_status, speed_mode) {
+    if (box_idc_status == 'true' && idc_svr_status == 'true') {
+      $('#status_img').attr('src', 'images/all_good.jpg');
+    }
+    if (box_idc_status != 'true' && idc_svr_status == 'true') {
+      $('#status_img').attr('src', 'images/first_bad.jpg');
+    }
+    if (box_idc_status == 'true' && idc_svr_status != 'true') {
+      $('#status_img').attr('src', 'images/second_bad.jpeg');
+    }
+    if (box_idc_status != 'true' && idc_svr_status != 'true') {
+      $('#status_img').attr('src', 'images/all_bad.jpg');
+    }
+    if (speed_mode == 'off') {
+      $('#myScheme').switchToggle(false)
+    } else {
+      $('#myScheme').switchToggle(true)
+    }
+  }
+
+  function getStatus() {
+    var url = _document_root + 'doGetStatus';
+    $.ajax({
+      url: url,
+      success: function(res) {
+        var obj = JSON.parse(res);
+        var box_idc_status = `${obj.box_idc_status}`;
+        var idc_svr_status = `${obj.idc_svr_status}`;
+        var speed_mode = obj.speed_mode;
+        updateStatus(box_idc_status, idc_svr_status, speed_mode);
+      },
+      error: function(error) {
+        var obj = JSON.parse(res);
+        alert(obj);
+      },
+    });
+
+  }
+
+  function fn_update_pic() {
+    var s = '<img id="main_image" onload="image_loaded()" src=/netcard_temp.png?' + Math.random() + '> </img>';
+    $('#netcard_speed').html(s);
+  }
+
+  fn_update_pic();
+
+  function image_loaded() {
+    setTimeout(function() {
+      $('#main_image').attr('src', `/netcard_temp.png?${Math.random()}`)
+    }, 1000)
+  }
+
+  function fn_switch_speedmode() {
+    var url = _document_root + 'doSwitchSpeedService';
+    $.ajax({
+      url: url,
+      success: function(res) {
+        var obj = JSON.parse(res);
+        if (obj['Status'] == 'OK') {
+          var scheme = $('#myScheme').attr('checked');
+          if (scheme) {
+            console.log('on to off', scheme);
+            $('#myScheme').switchToggle(false)
+          } else {
+            console.log('off to on', scheme);
+            $('#myScheme').switchToggle(true)
+          }
+        } else {
+          alert('Failed');
+        }
+      },
+      error: function(error) {
+        var obj = JSON.parse(res);
+        alert(obj);
+      },
+    });
+  }
+
+  setInterval('getStatus()', 5000);
+</script>
+</html>
