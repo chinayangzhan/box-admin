@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, user-scalable=no"/>
+    <title>VIPspeed</title>
+    <meta charset="UTF-8">
+    <!--在 web app 应用下状态条（屏幕顶部条）的颜色；(改变顶部状态条的颜色)-->
+    <!--默认值为 default（白色），可以定为 black（黑色）和 black-translucent（灰色半透明）；-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="applicable" content="pc,mobile"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <link rel="stylesheet" href="/test1/main.css">
+    <style>
+        body{
+            padding: 24px;
+            box-sizing: border-box;
+            font-family:PingFangSC-Regular,PingFang SC;
+        }
+        #header {
+            margin: 0 auto;
+            margin-top: 13px;
+            text-align: center;
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+        }
+        .notice1 {
+            width:198px;
+            height:18px;
+            font-size:18px;
+            font-family:PingFangSC-Regular,PingFang SC;
+            font-weight:400;
+            color:rgba(255,255,255,1);
+            line-height:18px;
+            margin-top: 36px;
+            margin-bottom: 27px;
+        }
+        .circle{
+            border-radius: 6px;
+            width:6px;
+            height:6px;
+            background:rgba(255,71,57,1);
+            margin-right: 6px;
+        }
+        .btn {
+            width:160px;
+            height:50px;
+            background:rgba(0,204,112,1);
+            border-radius:4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: white;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div id="header">
+        <img style="width: 88px; height: 25px;" src="/test1/logo.png" alt="">
+    </div>
+    <div style="display: flex; align-items: center">
+        <div class="circle"></div>
+        <div class="notice1">路由器当前没有连上网络</div>
+    </div>
+    <div class="text_gray txs" style="margin-bottom: 26px;">您可通过下面两种方式连接网络：</div>
+    <div class="text_gray txs" style="margin-bottom: 26px;">1.以有线方式连接网络</div>
+    <img style="display: block;width: 70px;height: 72px; margin: 0 auto" src="/test1/no_internet.png" alt="没有连上网络" />
+    <div style="margin-top: 41px;margin-bottom: 52px;" class="text_gray txs">2.点击下方按钮连接无线网络</div>
+    <a href="/cgi-bin/admin" class="btn">
+        连接无线网络
+    </a>
+    <div style="width: 100%; height: 35px;"></div>
+</div>
+</body>
+</html>

@@ -10,9 +10,6 @@ body {
     background:rgba(38,30,44,1);
 }
 
-image{
-    display: block;
-}
 
 ::-webkit-input-placeholder { /* WebKit browsers */
     color: #B2B2B2;
@@ -31,7 +28,7 @@ image{
         margin: 0 auto;
         min-height: 100vh;
         background:linear-gradient(180deg,rgba(38,30,44,1) 0%,rgba(38,30,44,0) 100%);
-        overflow:hidden
+        overflow-x:hidden
     }
 
 }
@@ -43,7 +40,7 @@ image{
         margin: 0 auto;
         min-height: 100vh;
         background:linear-gradient(180deg,rgba(38,30,44,1) 0%,rgba(38,30,44,0) 100%);
-        overflow:hidden
+        overflow-x:hidden
     }
 
 }
