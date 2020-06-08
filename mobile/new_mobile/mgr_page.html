@@ -46,6 +46,7 @@
             margin: 0 auto;
             display: block;
             font-size:14px;
+            border-radius:0;
             font-family:PingFangSC-Regular,PingFang SC;
             font-weight:400;
             color:rgba(255,255,255,1);
@@ -57,6 +58,7 @@
             height:60px;
             background:rgba(0,0,0,0);
             border: none;
+            border-radius:0;
             border-bottom: 1px solid rgba(178,178,178,0.27);
             margin: 0 auto;
             display: flex;
@@ -94,8 +96,8 @@
         <input type="password" class="password_input"  id="login_newpwd2" placeholder="请再输入新密码">
         <div id="modify_login_newpwd" class="bg_green">确定</div>
     </div>
-    <div id="onlyMobile" style="display: none">
-    <!--<div id="onlyMobile" style="display: block;">-->
+    <!--<div id="onlyMobile" style="display: none">-->
+    <div id="onlyMobile" style="display: block;">
         <div class="section">
             <div class="section_title_label" style="justify-content: space-between">
                 <div style="display: flex; align-items: center">
@@ -128,28 +130,26 @@
         </div>
     </div>
 
-    <div style="margin-bottom: 50px;"></div>
+    <div style="width: 100%; height:115px;"></div>
+    <footer>
+        <div class="footer_nav" id="status_icon">
+            <img style="width: 26px; height: 23px;" src="images/dashboard_icon_gray.png" alt="">
+            <div class="text_gray">状态</div>
+        </div>
+        <div class="footer_nav" id="setting">
+            <img src="images/setting_icon_green.png" alt="">
+            <div class="text_green">设置</div>
+        </div>
+    </footer>
 </div>
 </body>
+<script src="js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
 <script src="js/jquery.js"></script>
-<script src="js/main.js"></script>
 <script>
 
-  //  function fn_modify_wifi_name(){
-  //    newName=document.getElementById("wifi_newname").value;
-  //    if(newName.length < 1){
-  //      alert("new name not valid");
-  //      return;
-  //    }
-  //    var cmd="uci set wireless.default_radio0.ssid=\'" + newName + "\'; uci commit wireless;wifi reload"
-  //    var words = CryptoJS.enc.Utf8.parse(cmd); // WordArray object
-  //    var base64 = CryptoJS.enc.Base64.stringify(words); // base64 string
-  //    var url='/cgi-bin/shell?' + base64;
-  //    var s=syncRequest( url);
-  //  }
   if (`{{device_type}}`.indexOf('mobile') > -1) {
     $('#onlyMobile').show();
   }
@@ -225,8 +225,8 @@
   $('#more_wifi').on('click', function() {
     window.location.href = "/cgi-bin/admin"
   })
-  $("#logout").on('click', function() {
-    window.location.href = "/admin/login"
+  $("#status_icon").on('click', function() {
+    window.location.href = "/admin/"
   })
 </script>
 </html>

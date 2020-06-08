@@ -42,7 +42,3 @@ function _getCookie(cname) {
   }
   return "";
 }
-
-$('#goBack').on('click', function() {
-  window.history.back(-1);
-});
