@@ -104,6 +104,63 @@
             top:-5px;
             display: none;
         }
+        footer{
+            font-size: 12px;
+            width:100%;
+            height:78px;
+            background:rgba(38,30,44,1);
+            border-top:1px solid rgba(25,27,33,1);
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+        }
+        .footer_nav {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer_nav img{
+            width: 22px;
+            height: 23px;
+            display: block;
+            margin-top: 21px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 767px)  {  /*{ //<=767的设备 }  手机*/
+            #main {
+                margin: 0 auto;
+                min-height: 100vh;
+                background:linear-gradient(180deg,rgba(38,30,44,1) 0%,rgba(38,30,44,0) 100%);
+                overflow-x:hidden;
+            }
+
+            footer {
+                width: 100%;
+            }
+
+        }
+        /*@media (min-width: 768px)  { ... col-sm-3... }  { //>=768的设备 }  平板*/
+        /*@media (min-width: 992px)  { ... col-md-3...}   { //>=992的设备 }  电脑*/
+        @media (min-width: 768px) {
+            #main {
+                max-width: 768px;
+                margin: 0 auto;
+                min-height: 100vh;
+                background:linear-gradient(180deg,rgba(38,30,44,1) 0%,rgba(38,30,44,0) 100%);
+                overflow-x:hidden;
+            }
+            footer{
+                max-width: 768px;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                margin: 0 auto;
+            }
+
+        }
     </style>
 </head>
 <body>
