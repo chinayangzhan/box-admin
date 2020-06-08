@@ -16,11 +16,6 @@
     <meta http-equiv="Cache-control" content="no-cache">
     <link rel="stylesheet" href="css/main.css">
     <style>
-        #main{
-            background-image: url('images/home_bg.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
         #header {
             margin: 0 auto;
             margin-top: 13px;
@@ -128,7 +123,6 @@
             margin-top: 21px;
             margin-bottom: 10px;
         }
-
         @media (max-width: 767px)  {  /*{ //<=767的设备 }  手机*/
             #main {
                 margin: 0 auto;
@@ -161,6 +155,11 @@
             }
 
         }
+        #main{
+            background-image: url('images/home_bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
     </style>
 </head>
 <body>
@@ -181,7 +180,7 @@
                 </div>
             </div>
             <div class="status_item">
-                <img src="images/speed_main.png" style="width: 100%;" alt="">
+                <img src="images/speed_main.png" style="width: 75px; height: 66px;" alt="">
             </div>
             <div class="status_item">
                 <div id="bandwidth_input" class="speed_num tlg">{{bandwidth_input}}</div>
@@ -210,7 +209,7 @@
         </div>
         <div class="text_box">
             <div style="width: 44px; height: 28px;">盒子</div>
-            <div style="width: 32px; height: 32px;">当地运营商</div>
+            <div style="height: 32px;">当地运营商</div>
             <div style="width: 30px; height: 31px;">目的地</div>
         </div>
     </div>
@@ -285,12 +284,12 @@
       url: url,
       success: function(res) {
         var obj = JSON.parse(res);
-        var box_idc_status = `${obj.box_idc_status}`;
-        var idc_svr_status = `${obj.idc_svr_status}`;
+        var box_idc_status = obj.box_idc_status + "";
+        var idc_svr_status = obj.idc_svr_status + "";
         var speed_mode = obj.speed_mode;
-        var bandwidth_input = `${obj.bandwidth_input}`;
-        var bandwidth_output = `${obj.bandwidth_output}`;
-        var devices_num = `${obj.devices_num}`;
+        var bandwidth_input = obj.bandwidth_input;
+        var bandwidth_output = obj.bandwidth_output;
+        var devices_num = obj.devices_num;
         $('#bandwidth_input').html(bandwidth_input)
         $('#bandwidth_output').html(bandwidth_output)
         $('#devices_num').html(devices_num)
@@ -304,18 +303,18 @@
 
   }
 
-  function fn_update_pic() {
-    var s = '<img id="main_image" onload="image_loaded()" src=/netcard_temp.png?' + Math.random() + '> </img>';
-//    $('#netcard_speed').html(s);
-  }
-
-  fn_update_pic();
-
-  function image_loaded() {
-    setTimeout(function() {
-      $('#main_image').attr('src', `/netcard_temp.png?${Math.random()}`)
-    }, 1000)
-  }
+//  function fn_update_pic() {
+//    var s = '<img id="main_image" onload="image_loaded()" src=/netcard_temp.png?' + Math.random() + '> </img>';
+////    $('#netcard_speed').html(s);
+//  }
+//
+//  fn_update_pic();
+//
+//  function image_loaded() {
+//    setTimeout(function() {
+//      $('#main_image').attr('src', `/netcard_temp.png?${Math.random()}`)
+//    }, 1000)
+//  }
 
   function fn_switch_speedmode() {
     var url = _document_root + 'doSwitchSpeedService';
