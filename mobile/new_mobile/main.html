@@ -59,9 +59,9 @@
 
         .connect_status {
             width: 89%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            /*display: flex;*/
+            /*justify-content: space-around;*/
+            /*align-items: center;*/
             margin: 0 auto;
             margin-top: 70px;
         }
@@ -70,10 +70,19 @@
         }
 
         .line {
-            width:100%;
+            width:14%;
             height:1px;
             background:rgba(0,203,111,1);
             border-radius:100px;
+            display: flex;
+            justify-content: center;
+        }
+        .text_box{
+            display: flex;justify-content: space-between; text-align: center;
+            margin-top: 15px;
+        }
+        .text_box div{
+            white-space: nowrap; display: flex;justify-content: center;
         }
         .connect_num_box {
             width: 149px;
@@ -92,7 +101,7 @@
             width: 12px;
             height: 12px;
             position: relative;
-            top:-9px;
+            top:-5px;
             display: none;
         }
     </style>
@@ -131,45 +140,21 @@
     </div>
     <!--显示连接状态-->
     <div class="connect_status">
-        <!--<div style="display: flex;justify-content: space-between; align-items: center">-->
-            <!--<img src="images/box_icon.png" style="width: 44px; height: 28px;" alt="盒子">-->
-            <!--<div id="line1" class="line">-->
-                <!--<img class="red_x" src="images/red_x.png" alt="">-->
-            <!--</div>-->
-            <!--<img src="images/network_white.png" style="width: 32px; height: 32px;" alt="当地运营商">-->
-            <!--<div id="line2"  class="line">-->
-                <!--<img class="red_x" src="images/red_x.png" alt="">-->
-            <!--</div>-->
-            <!--<img src="images/database.png" style="width: 30px; height: 31px;" alt="目的地">-->
-        <!--</div>-->
-        <!--<div style="display: flex;justify-content: space-between;">-->
-            <!--<div>盒子</div>-->
-            <!--<div style="text-align: center">当地运营商</div>-->
-            <!--<div>目的地</div>-->
-        <!--</div>-->
-        <div class="img_box">
+        <div style="display: flex;justify-content: space-between; align-items: center">
             <img src="images/box_icon.png" style="width: 44px; height: 28px;" alt="盒子">
-            <div>盒子</div>
-        </div>
-        <div class="img_box" style="width: 13%">
             <div id="line1" class="line">
                 <img class="red_x" src="images/red_x.png" alt="">
             </div>
-            <div style="opacity: 0">盒子</div>
-        </div>
-        <div class="img_box">
             <img src="images/network_white.png" style="width: 32px; height: 32px;" alt="当地运营商">
-            <div>当地运营商</div>
-        </div>
-        <div class="img_box" style="width: 13%">
             <div id="line2"  class="line">
                 <img class="red_x" src="images/red_x.png" alt="">
             </div>
-            <div style="opacity: 0">盒子</div>
-        </div>
-        <div class="img_box">
             <img src="images/database.png" style="width: 30px; height: 31px;" alt="目的地">
-            <div>目的地</div>
+        </div>
+        <div class="text_box">
+            <div style="width: 44px; height: 28px;">盒子</div>
+            <div style="width: 32px; height: 32px;">当地运营商</div>
+            <div style="width: 30px; height: 31px;">目的地</div>
         </div>
     </div>
     <!--连接数量-->
